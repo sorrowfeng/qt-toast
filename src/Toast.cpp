@@ -173,6 +173,44 @@ Toast::~Toast()
 {
 }
 
+void Toast::showToast(QWidget *parent,
+                      int duration,
+                      const QString &title, const QString &text,
+                      bool showIcon, ToastIcon iconType,
+                      int maxOnSreen, ToastPosition position)
+{
+    Toast::setMaximumOnScreen(maxOnSreen);
+    Toast::setSpacing(10);
+    Toast::setOffset(20, 45);
+    Toast::setAlwaysOnMainScreen(false);
+    Toast::setPosition(position);
+
+    Toast* toast = new Toast(parent);
+
+    toast->setDuration(duration);
+    toast->setTitle(title);
+    toast->setText(text);
+    toast->setShowIcon(showIcon);
+    toast->setIcon(iconType);
+
+    toast->applyPreset(static_cast<ToastPreset>(iconType));
+
+    toast->setMinimumWidth(0);
+    toast->setMaximumWidth(1000);
+    toast->setMinimumHeight(0);
+    toast->setMaximumHeight(1000);
+    toast->setFadeInDuration(250);
+    toast->setFadeOutDuration(250);
+    toast->setBorderRadius(2);
+    toast->setIconSize(QSize(24, 24));
+    toast->setShowDurationBar(true);
+    toast->setResetDurationOnHover(true);
+    toast->setCloseButtonAlignment(ToastButtonAlignment::TOP);
+
+    toast->show();
+}
+
+
 int Toast::getMaximumOnScreen()
 {
     return s_maximumOnScreen;
@@ -1328,7 +1366,7 @@ void Toast::hide_()
     }
 }
 
-void Toast::enterEvent(QEnterEvent* event)
+void Toast::enterEvent(QEvent* event)
 {
     // Reset timer if hovered and resetting is enabled
     if (m_duration != 0 && m_durationTimer->isActive() && m_resetDurationOnHover)
