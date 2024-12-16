@@ -22,6 +22,12 @@ public:
     Toast(QWidget* parent = nullptr);
     ~Toast();
 
+    static void showToast(QWidget* parent,
+                          int duration,
+                          const QString& title, const QString& text,
+                          bool showIcon, ToastIcon iconType,
+                          int maxOnSreen, ToastPosition position);
+
     static int getMaximumOnScreen();
     static int getSpacing();
     static QPoint getOffset();
@@ -152,7 +158,7 @@ signals:
     void closed();
 
 protected:
-    virtual void enterEvent(QEnterEvent* event) override;
+    virtual void enterEvent(QEvent* event) override;
     virtual void leaveEvent(QEvent* event) override;
 
 private slots:
